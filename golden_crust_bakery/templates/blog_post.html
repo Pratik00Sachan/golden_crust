@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title will be dynamic in a real app -->
+    <title>Blog Post | Golden Crust</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .single-post-container {
+            max-width: 800px; /* More focused reading width */
+            margin: 2rem auto; /* Center it and add some margin */
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .single-post-image {
+            width: 100%;
+            height: auto;
+            max-height: 400px; /* Max height for the image */
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .post-meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+        .single-post-container h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .single-post-container p {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .back-to-blog-btn {
+            margin-top: 2rem;
+            display: inline-block; /* So it doesn't take full width by default */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}" class="logo">Golden<span>Crust</span></a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li><a href="{{ url_for('products') }}">Our Breads</a></li>
+                <li><a href="{{ url_for('blog') }}">Breakfast Bites</a></li>
+                <li><a href="{{ url_for('cart') }}">Cart <span id="cart-item-count-nav">(0)</span></a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+            <div>
+                <a href="{{ url_for('cart') }}" class="cart-icon">🛒<span id="cart-item-count-icon">(0)</span></a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('profile') }}" class="profile-icon">👤</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="profile-icon">👤</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="single-post-container">
+            <!-- Mock Content - In a real app, this would be dynamically populated -->
+            <h1>{{ post_title | default("The Secret to Perfect Sourdough") }}</h1>
+            <p class="post-meta">Published on {{ publish_date | default("October 27, 2023") }} by Golden Crust Bakery</p>
+            
+            <img src="{{ image_url | default('https://via.placeholder.com/800x400/F9A825/3E2723?text=Perfect+Sourdough+Loaf') }}" alt="{{ post_title | default('Blog Post Image') }}" class="single-post-image">
+            
+            <div>
+                {{ post_content_html | safe if post_content_html else "<p>Default placeholder content if nothing is provided.</p><p>More placeholder text...</p>" }}
+            </div>
+            
+            <a href="{{ url_for('blog') }}" class="btn back-to-blog-btn">← Back to Blog</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">GoldenCrust</div>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li><a href="{{ url_for('products') }}">Our Breads</a></li>
+                <li><a href="{{ url_for('blog') }}">Breakfast Bites</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+            </ul>
+            <div class="social-icons">
+                <a href="#">📱</a>
+                <a href="#">📘</a>
+                <a href="#">📸</a>
+                <a href="#">🐦</a>
+            </div>
+            <p class="copyright">© 2023 GoldenCrust Artisan Bakery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
